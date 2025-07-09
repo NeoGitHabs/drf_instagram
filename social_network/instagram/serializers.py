@@ -11,6 +11,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password', 'first_name', 'last_name', 'user_age', 'bio', 'image', 'website', 'created_at']
         extra_kwargs = {'password': {'write_only': True}}
 
+class UserProfileCreateSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(validators=[UniqueValidator(queryset=UserProfile.objects.all())])
+    class Meta:
+        model = UserProfile
+        fields = ['username', 'email', 'password', 'first_name', 'last_name', 'user_age', 'bio', 'image', 'website']
+        extra_kwargs = {'password': {'write_only': True}}
+
 class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow

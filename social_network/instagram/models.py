@@ -89,6 +89,24 @@ class SaveItem(models.Model):
     def __str__(self):
         return f'post:{self.post} | save:{self.save}'
 
+class Chat(models.Model):
+    person = models.ManyToManyField(UserProfile)
+    created_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'person:{self.person} | created_date:{self.created_date}'
+
+class Message(models.Model):
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    text = models.TextField()
+    image = models.ImageField(upload_to='message_images/', null=True, blank=True)
+    video = models.FileField(upload_to='message_videos/', null=True, blank=True)
+    created_date = models.DateField(auto_now_add=True)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'author:{self.author} | text:{self.text} | image:{self.image} | video:{self.video}'
+
 #+ .env
 #+ translate(+2)
 #+ pagination
@@ -96,5 +114,3 @@ class SaveItem(models.Model):
 #+ filter(hashtag), search(username), order(post(created_at))
 # permission
 # jwt
-
-

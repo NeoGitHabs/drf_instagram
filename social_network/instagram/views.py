@@ -1,13 +1,12 @@
 from rest_framework import generics, viewsets
 from .models import UserProfile, Follow, Post, PostLike, Comment, CommentLike, Story, Save, SaveItem
-from .serializers import UserProfileSerializer, FollowSerializer, PostSerializer, PostLikeSerializer, CommentSerializer, CommentLikeSerializer, StorySerializer, SaveSerializer, SaveItemSerializer
+from .serializers import UserProfileSerializer, UserProfileCreateSerializer, FollowSerializer, PostSerializer, PostLikeSerializer, CommentSerializer, CommentLikeSerializer, StorySerializer, SaveSerializer, SaveItemSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import permissions
 
 
 class UserProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
     def get_queryset(self):
@@ -15,9 +14,9 @@ class UserProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     # permission_classes = [permissions.IsAuthenticated]
 
-class UserProfileCreteAPIView(generics.RetrieveUpdateDestroyAPIView):
+class UserProfileCreteAPIView(generics.CreateAPIView):
     queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+    serializer_class = UserProfileCreateSerializer
 
 class FollowListAPIView(generics.ListAPIView):
     queryset = Follow.objects.all()
