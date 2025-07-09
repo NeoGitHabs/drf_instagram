@@ -4,7 +4,6 @@ from .views import RegisterView, CustomLoginView, LogoutView
 
 
 urlpatterns = [
-    path('register/', UserProfileCreteAPIView.as_view(), name='registers'),
     path('user/<int:pk>/', UserProfileAPIView.as_view(), name='users'),
     path('follow/', FollowListAPIView.as_view(), name='follow_lists'),
     path('post_list/', PostListAPIView.as_view(), name='post_lists'),
