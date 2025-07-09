@@ -19,7 +19,7 @@ class Follow(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.follower} {self.following}'
+        return f'follower:{self.follower} | following:{self.following}'
 
 class Post(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -30,7 +30,7 @@ class Post(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.image} {self.video} {self.description}'
+        return f'user:{self.user} | image:{self.image} | video:{self.video} | description:{self.description} | hashtag:{self.hashtag}'
 
 class PostLike(models.Model):
     user =  models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -38,8 +38,11 @@ class PostLike(models.Model):
     like = models.BooleanField(blank=True, null=True,default=False)
     created_at = models.DateField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('user', 'post',)
+
     def __str__(self):
-        return f'{self.like}'
+        return f'user:{self.user} | post:{self.post} | like:{self.like}'
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -49,7 +52,7 @@ class Comment(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.text}'
+        return f'user:{self.user} | post:{self.post} | text:{self.text} | parent:{self.parent}'
 
 class CommentLike(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -57,8 +60,11 @@ class CommentLike(models.Model):
     like = models.BooleanField(blank=True, null=True)
     created_at = models.DateField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('user', 'comment',)
+
     def __str__(self):
-        return f'{self.comment} {self.like}'
+        return f'user:{self.user} | comment:{self.comment} | like:{self.like}'
 
 class Story(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -67,13 +73,13 @@ class Story(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.image} {self.video}'
+        return f'user:{self.user} | image:{self.image} | video:{self.video}'
 
 class Save(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.user}'
+        return f'user:{self.user}'
 
 class SaveItem(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -81,7 +87,7 @@ class SaveItem(models.Model):
     created_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.save}'
+        return f'post:{self.post} | save:{self.save}'
 
 #+ .env
 #+ translate(+2)

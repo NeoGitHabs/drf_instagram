@@ -15,6 +15,10 @@ class UserProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     # permission_classes = [permissions.IsAuthenticated]
 
+class UserProfileCreteAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
 class FollowListAPIView(generics.ListAPIView):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
