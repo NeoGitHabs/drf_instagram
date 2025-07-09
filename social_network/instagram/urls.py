@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import UserProfileAPIView, UserProfileCreteAPIView, FollowListAPIView, PostListAPIView, PostLikeListAPIView, CommentListAPIView, CommentLikeListAPIView, StoryListAPIView, SaveListAPIView, SaveItemListAPIView
+from .views import RegisterView, CustomLoginView, LogoutView
 
 
 urlpatterns = [
@@ -13,4 +14,7 @@ urlpatterns = [
     path('story_list/', StoryListAPIView.as_view(), name='story_lists'),
     path('save_list/', SaveListAPIView.as_view(), name='save_lists'),
     path('save_item_list/', SaveItemListAPIView.as_view(), name='save_item_lists'),
+    path('register/', RegisterView.as_view(), name = 'register'),
+    path('login/', CustomLoginView.as_view(), name = 'login'),
+    path('logout/', LogoutView.as_view(), name = 'logout'),
     ]
