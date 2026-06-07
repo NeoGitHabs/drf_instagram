@@ -13,6 +13,7 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+
 class Follow(models.Model):
     follower = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='follower')
     following = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='following')
@@ -20,6 +21,7 @@ class Follow(models.Model):
 
     def __str__(self):
         return f'follower:{self.follower} | following:{self.following}'
+
 
 class Post(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -30,19 +32,21 @@ class Post(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'user:{self.user} | image:{self.image} | video:{self.video} | description:{self.description} | hashtag:{self.hashtag}'
+        return f'user:{self.user} | description:{self.description} | hashtag:{self.hashtag}'
+
 
 class PostLike(models.Model):
-    user =  models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    like = models.BooleanField(blank=True, null=True,default=False)
+    like = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'post',)
+        unique_together = ('user', 'post')
 
     def __str__(self):
         return f'user:{self.user} | post:{self.post} | like:{self.like}'
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -52,19 +56,21 @@ class Comment(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'user:{self.user} | post:{self.post} | text:{self.text} | parent:{self.parent}'
+        return f'user:{self.user} | post:{self.post} | text:{self.text}'
+
 
 class CommentLike(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    like = models.BooleanField(blank=True, null=True)
+    like = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'comment',)
+        unique_together = ('user', 'comment')
 
     def __str__(self):
         return f'user:{self.user} | comment:{self.comment} | like:{self.like}'
+
 
 class Story(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -75,19 +81,22 @@ class Story(models.Model):
     def __str__(self):
         return f'user:{self.user} | image:{self.image} | video:{self.video}'
 
+
 class Save(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'user:{self.user}'
 
+
 class SaveItem(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    save = models.IntegerField()
+    save = models.ForeignKey(Save, on_delete=models.CASCADE)
     created_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f'post:{self.post} | save:{self.save}'
+
 
 class Chat(models.Model):
     person = models.ManyToManyField(UserProfile)
@@ -95,6 +104,7 @@ class Chat(models.Model):
 
     def __str__(self):
         return f'person:{self.person} | created_date:{self.created_date}'
+
 
 class Message(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -105,12 +115,4 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'author:{self.author} | text:{self.text} | image:{self.image} | video:{self.video}'
-
-#+ .env
-#+ translate(+2)
-#+ pagination
-#+ swagger
-#+ filter(hashtag), search(username), order(post(created_at))
-# permission
-# jwt
+        return f'author:{self.author} | text:{self.text}'
